@@ -56,18 +56,6 @@
             color: #ff5733;
             font-size: 28px;
             font-weight: bold;
-            animation: fadeInUp 1s ease-in-out;
-        }
-
-        .text p {
-            color: #444;
-            font-size: 16px;
-            animation: fadeInUp 1.2s ease-in-out;
-        }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
         }
 
         .countdown {
@@ -75,7 +63,6 @@
             font-weight: bold;
             color: #27ae60;
             margin-top: 10px;
-            animation: fadeInUp 1.4s ease-in-out;
         }
 
         .buttons {
@@ -93,7 +80,6 @@
             font-weight: bold;
             font-size: 16px;
             transition: 0.3s ease;
-            animation: fadeInUp 1.6s ease-in-out;
         }
 
         .share {
@@ -119,7 +105,7 @@
             pointer-events: none;
         }
 
-        .color {
+        .color, .water-splash {
             width: 50px;
             height: 50px;
             border-radius: 50%;
@@ -134,17 +120,6 @@
             100% { transform: scale(2.5); opacity: 0; }
         }
 
-        footer {
-            text-align: center;
-            font-size: 16px;
-            color: white;
-            position: absolute;
-            bottom: 10px;
-            width: 100%;
-            font-weight: bold;
-            text-shadow: 1px 1px 3px black;
-        }
-
         .balloon {
             width: 50px;
             height: 70px;
@@ -156,6 +131,16 @@
         @keyframes float {
             0% { transform: translateY(0); opacity: 1; }
             100% { transform: translateY(-100vh); opacity: 0; }
+        }
+
+        footer {
+            text-align: center;
+            font-size: 16px;
+            color: white;
+            position: absolute;
+            bottom: 10px;
+            width: 100%;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -179,6 +164,8 @@
 
     <footer>By: Aman Vishwakarma</footer>
 
+    <audio id="holiMusic" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
+
     <script>
         function updateCountdown() {
             const holiDate = new Date("March 14, 2025 00:00:00").getTime();
@@ -195,27 +182,48 @@
         setInterval(updateCountdown, 1000);
         updateCountdown();
 
-        function createColorEffect(x, y) {
-            const color = document.createElement("div");
-            color.classList.add("color");
-            document.querySelector(".colors").appendChild(color);
-            
+        function createEffect(x, y) {
+            const effect = document.createElement("div");
+            effect.classList.add("color");
+            document.querySelector(".colors").appendChild(effect);
+
             const colors = ["red", "blue", "green", "yellow", "purple", "orange"];
-            color.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-            color.style.left = x + "px";
-            color.style.top = y + "px";
-            
-            setTimeout(() => color.remove(), 1000);
+            effect.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            effect.style.left = x + "px";
+            effect.style.top = y + "px";
+
+            setTimeout(() => effect.remove(), 1000);
         }
 
         document.body.addEventListener("click", function(event) {
-            createColorEffect(event.clientX, event.clientY);
+            createEffect(event.clientX, event.clientY);
         });
 
         function shareHoliCard() {
             navigator.share({ title: "Happy Holi 2025!", text: "Enjoy the Festival of Colors!", url: window.location.href });
         }
 
+        function toggleMusic() {
+            const music = document.getElementById("holiMusic");
+            if (music.paused) {
+                music.play();
+            } else {
+                music.pause();
+            }
+        }
+
+        function createBalloons() {
+            setInterval(() => {
+                const balloon = document.createElement("img");
+                balloon.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Balloon_Icon.svg/1024px-Balloon_Icon.svg.png";
+                balloon.classList.add("balloon");
+                document.body.appendChild(balloon);
+
+                balloon.style.left = Math.random() * window.innerWidth + "px";
+                setTimeout(() => balloon.remove(), 6000);
+            }, 1000);
+        }
+        createBalloons();
     </script>
 
 </body>
